@@ -1,16 +1,12 @@
-# YamlDb
+# ydd - Yaml DB Dumber
 
-YamlDb is a database-independent format for dumping and restoring data.  It complements the the database-independent schema format found in db/schema.rb.  The data is saved into db/data.yml.
-
-This can be used as a replacement for mysqldump or pg_dump, but only for the databases typically used by Rails apps.  Users, permissions, schemas, triggers, and other advanced database features are not supported - by design.
-
-Any database that has an ActiveRecord adapter should work.
+A fork of the awesome [yaml_db](http://github.com/ludicast/yaml_db).
 
 ## Installation
 
 This plugin can now be installed as a gem via 
 
-    gem install yaml_db
+    gem install ydd
 
 Note that when doing this, the rake tasks won't automatically be available to your app.  You'll have to explicitly include them via the approaches followed: [here](http://ggr.com/how-to-include-a-gems-rake-tasks-in-your-rails-app.html), [here](https://rails.lighthouseapp.com/projects/8994/tickets/510-rake-tasks-not-included-for-gems), [and here](https://rails.lighthouseapp.com/projects/8994/tickets/59)
 
