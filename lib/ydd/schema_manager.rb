@@ -8,7 +8,7 @@ module YDD
     end
     
     def self.load(path)
-      load path if File.exists?(path)
+      Kernel.load path if File.exists?(path)
     end
     
   end

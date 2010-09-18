@@ -4,16 +4,16 @@ require 'spec/rake/spectask'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "yaml_db"
-    gem.summary = %Q{yaml_db allows export/import of database into/from yaml files}
+    gem.name = "ydd"
+    gem.summary = %Q{ydd dumps / loads rails app databases for backup purposes.}
     gem.description = %Q{
-YamlDb is a database-independent format for dumping and restoring data.  It complements the the database-independent schema format found in db/schema.rb.  The data is saved into db/data.yml.
-This can be used as a replacement for mysqldump or pg_dump, but only for the databases typically used by Rails apps.  Users, permissions, schemas, triggers, and other advanced database features are not supported - by design.
-Any database that has an ActiveRecord adapter should work
+YDD is a tool (a fork of yaml_db really) to make it generally easy
+to use it for things like copying databases from production to staging
+and the like.
 }
-    gem.email = "nate@ludicast.com"
-    gem.homepage = "http://github.com/ludicast/yaml_db"
-    gem.authors = ["Adam Wiggins","Orion Henry"]
+    gem.email = "sutto@sutto.net"
+    gem.homepage = "http://github.com/YouthTree/ydd"
+    gem.authors = ["Adam Wiggins","Orion Henry", "Darcy Laycock"]
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

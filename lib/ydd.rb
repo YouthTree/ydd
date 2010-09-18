@@ -1,4 +1,5 @@
 require 'yaml'
+require 'active_support'
 require 'active_record'
 require 'fileutils'
 
@@ -9,12 +10,13 @@ module YDD
   autoload :DataManager,         'ydd/data_manager'
   autoload :YamlDB,              'ydd/yaml_db'
   autoload :SerializationHelper, 'ydd/serialization_helper'
+  autoload :Application,         'ydd/application'
 
   def self.env=(value)
     if value.blank?
       @@env = nil
     else
-      @env = value
+      @@env = value
     end
   end
   
