@@ -1,17 +1,12 @@
-require 'rubygems'
-require 'yaml'
-require 'active_record'
-require 'serialization_helper'
-
 module YDD
-  module YamlDb
+  module YamlDB
     module Helper
       def self.loader
-        YamlDb::Load 
+        YamlDB::Load 
       end
 
       def self.dumper
-        YamlDb::Dump
+        YamlDB::Dump
       end
 
       def self.extension
@@ -44,7 +39,7 @@ module YDD
 
         each_table_page(table) do |records|
           rows = SerializationHelper::Utils.unhash_records(records, column_names)
-          io.write(YamlDb::Utils.chunk_records(records))
+          io.write(YamlDB::Utils.chunk_records(records))
         end
       end
 
