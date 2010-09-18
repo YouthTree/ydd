@@ -33,7 +33,8 @@ and the like.
      "lib/ydd/schema_manager.rb",
      "lib/ydd/serialization_helper.rb",
      "lib/ydd/yaml_db.rb",
-     "tasks/yaml_db_tasks.rake"
+     "tasks/yaml_db_tasks.rake",
+     "ydd.gemspec"
   ]
   s.homepage = %q{http://github.com/YouthTree/ydd}
   s.rdoc_options = ["--charset=UTF-8"]
