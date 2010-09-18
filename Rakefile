@@ -1,5 +1,4 @@
 require 'rake'
-require 'spec/rake/spectask'
 
 begin
   require 'jeweler'
@@ -14,16 +13,11 @@ and the like.
     gem.email = "sutto@sutto.net"
     gem.homepage = "http://github.com/YouthTree/ydd"
     gem.authors = ["Adam Wiggins","Orion Henry", "Darcy Laycock"]
+    gem.add_dependency 'thor', '~> 0.14'
+    gem.add_dependency 'activesupport', '~> 3.0.0'
+    gem.add_dependency 'activerecord', '~> 3.0.0'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
-
-desc "Run all specs"
-Spec::Rake::SpecTask.new('spec') do |t|
-	t.spec_files = FileList['spec/*_spec.rb']
-end
-
-task :default => :spec
-
