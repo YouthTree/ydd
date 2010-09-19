@@ -90,7 +90,7 @@ module YDD
       def self.convert_booleans(records, columns)
         records.each do |record|
           columns.each do |column|
-            record[column] = ['t', '1', true].include? record[column]
+            record[column] = ['t', '1', 'true'].include? record[column].to_s
           end
         end
         records
