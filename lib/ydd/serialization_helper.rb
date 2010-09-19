@@ -49,18 +49,14 @@ module YDD
 
       def self.load_table(table, data, truncate = true)
         column_names = data['columns']
-        if truncate
-          truncate_table(table)
-        end
+        truncate_table(table) if truncate
         load_records(table, column_names, data['records'])
         reset_pk_sequence!(table)
       end
 
       def self.load_records(table, column_names, records)
-        if column_names.nil?
-          return
-        end
-        columns = column_names.map{|cn| YDD.connection.columns(table).detect{|c| c.name == cn}}
+        return if column_names.nil?
+        columns = column_names.map{ |cn| YDD.connection.columns(table).detect{ |c| c.name == cn } }
         quoted_column_names = column_names.map { |column| YDD.connection.quote_column_name(column) }.join(',')
         quoted_table_name = SerializationHelper::Utils.quote_table(table)
         records.each do |record|
@@ -75,7 +71,6 @@ module YDD
         end
       end    
 
-      
     end
 
     module Utils
@@ -95,8 +90,7 @@ module YDD
       def self.convert_booleans(records, columns)
         records.each do |record|
           columns.each do |column|
-            next if is_boolean(record[column])
-            record[column] = (record[column] == 't' or record[column] == '1')
+            record[column] = ['t', '1', true].include? record[column]
           end
         end
         records
@@ -107,8 +101,8 @@ module YDD
         columns.map { |c| c.name }
       end
 
-      def self.is_boolean(value)
-        value.kind_of?(TrueClass) or value.kind_of?(FalseClass)
+      def self.boolean?(value)
+        [true, false].include? value
       end
 
       def self.quote_table(table)
@@ -150,17 +144,16 @@ module YDD
       end
 
 
-      def self.each_table_page(table, records_per_page=1000)
-        total_count = table_record_count(table)
-        pages = (total_count.to_f / records_per_page).ceil - 1
-        id = table_column_names(table).first
-        boolean_columns = SerializationHelper::Utils.boolean_columns(table)
-        quoted_table_name = SerializationHelper::Utils.quote_table(table)
-
-        (0..pages).to_a.each do |page|
-          sql = YDD.connection.add_limit_offset!("SELECT * FROM #{quoted_table_name} ORDER BY #{id}",
-                                                                :limit => records_per_page, :offset => records_per_page * page
-          )
+      def self.each_table_page(table, records_per_page = 1000)
+        total_count       = table_record_count(table)
+        pages             = (total_count.to_f / records_per_page).ceil - 1
+        id                = table_column_names(table).first
+        boolean_columns   = SerializationHelper::Utils.boolean_columns(table)
+        quoted_table_name = SerializationHelper::Utils.quote_table(table)        
+        base_query        = "SELECT * FROM #{quoted_table_name} ORDER BY #{id}"
+        0.upto(pages) do |page|
+          sql = YDD.connection.add_limit_offset! base_query.dup,
+            :limit => records_per_page, :offset => records_per_page * page
           records = YDD.connection.select_all(sql)
           records = SerializationHelper::Utils.convert_booleans(records, boolean_columns)
           yield records

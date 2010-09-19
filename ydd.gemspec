@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Adam Wiggins", "Orion Henry", "Darcy Laycock"]
-  s.date = %q{2010-09-18}
+  s.date = %q{2010-09-19}
   s.default_executable = %q{ydd}
   s.description = %q{
 YDD is a tool (a fork of yaml_db really) to make it generally easy
