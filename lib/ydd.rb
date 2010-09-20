@@ -12,6 +12,24 @@ module YDD
   autoload :SerializationHelper, 'ydd/serialization_helper'
   autoload :Application,         'ydd/application'
 
+  mattr_accessor :skip_schema, :skip_data
+  
+  def self.skip_schema?
+    !!skip_schema
+  end
+  
+  def self.skip_data?
+    !!skip_data
+  end
+
+  def self.tables=(value)
+    @@tables = value.blank? ? nil : Array(value).join(",").split(",")
+  end
+  
+  def self.tables
+    @@tables ||= nil
+  end
+
   def self.env=(value)
     if value.blank?
       @@env = nil
@@ -45,8 +63,8 @@ module YDD
   
   def self.dump(directory)
     FileUtils.mkdir_p directory
-    SchemaManager.dump File.join(directory, "schema.rb")
-    DataManager.dump   File.join(directory, "data.yml")
+    SchemaManager.dump File.join(directory, "schema.rb") unless skip_schema?
+    DataManager.dump   File.join(directory, "data.yml")  unless skip_data?
   end
   
   def self.load(directory)
@@ -54,8 +72,8 @@ module YDD
       raise Error, "Please provide a valid directory - #{directory} doesn't exist."
     end
     check_files! directory, "schema.rb", "data.yml"
-    SchemaManager.load File.join(directory, "schema.rb")
-    DataManager.load   File.join(directory, "data.yml")
+    SchemaManager.load File.join(directory, "schema.rb") unless skip_schema?
+    DataManager.load   File.join(directory, "data.yml")  unless skip_data?
   end
   
   def self.check_files!(dir, *files)

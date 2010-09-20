@@ -1,10 +1,13 @@
 require 'thor'
+require 'ruby-debug'
 
 module YDD
   class Application < Thor
     include Thor::Actions
     
-    method_options :env => :string, :force => :boolean
+    method_options :env => :string, :force => :boolean,
+                   :skip_schema => :boolean, :skip_data => :boolean,
+                   :tables => :string
     
     desc "dump DUMP_DIR [APP_DIR='.'] [OPTIONS]", "Dumps the database contents and schema."
     def dump(dump_dir, app_dir = ".")
@@ -27,7 +30,7 @@ module YDD
       @app_dir   = File.expand_path(app_dir)
       @db_config = File.join(@app_dir, "config", "database.yml")
       if !File.directory?(@app_dir)
-        die "The given application directory, #{@application}, does not exist."
+        die "The given application directory, #{@app_dir}, does not exist."
       elsif !File.exist?(@db_config)
         die "#{@db_config} does not exist."
       elsif YDD.configuration_from(@db_config).blank?
@@ -38,17 +41,16 @@ module YDD
     end
     
     def setup!(dump_dir, app_dir, extra = {})
-      validate_environment!
+      YDD.env         = options.env if options.env.present?
+      YDD.tables      = options.tables if options.tables.present?
+      YDD.skip_data   = options.skip_data?
+      YDD.skip_schema = options.skip_schema?
       setup_directories!    dump_dir, app_dir, extra
       connect_to_database!
     end
     
     def connect_to_database!
       YDD.connect_from @db_config
-    end
-    
-    def validate_environment!
-      YDD.env = options.env if options.env.present?
     end
     
     def die(error, code = 1)

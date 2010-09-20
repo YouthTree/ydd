@@ -129,7 +129,9 @@ module YDD
       end
 
       def self.tables
-        YDD.connection.tables.reject { |table| ['schema_info', 'schema_migrations'].include?(table) }
+        base_tables = YDD.connection.tables
+        base_tables &= YDD.tables if YDD.tables.present?
+          
       end
 
       def self.dump_table(io, table)
