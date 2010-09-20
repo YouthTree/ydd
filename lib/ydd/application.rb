@@ -1,5 +1,4 @@
 require 'thor'
-require 'ruby-debug'
 
 module YDD
   class Application < Thor
