@@ -131,7 +131,7 @@ module YDD
       def self.tables
         base_tables = YDD.connection.tables
         base_tables &= YDD.tables if YDD.tables.present?
-          
+        base_tables
       end
 
       def self.dump_table(io, table)

@@ -44,7 +44,7 @@ module YDD
       YDD.tables      = options.tables if options.tables.present?
       YDD.skip_data   = options.skip_data?
       YDD.skip_schema = options.skip_schema?
-      setup_directories!    dump_dir, app_dir, extra
+      setup_directories! dump_dir, app_dir, extra
       connect_to_database!
     end
     
