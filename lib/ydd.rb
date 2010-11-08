@@ -75,6 +75,7 @@ module YDD
     if !File.directory?(directory)
       raise Error, "Please provide a valid directory - #{directory} doesn't exist."
     end
+    
     unless skip_schema?
       check_files! directory, "schema.rb"
       SchemaManager.load File.join(directory, "schema.rb") 

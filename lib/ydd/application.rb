@@ -4,10 +4,11 @@ module YDD
   class Application < Thor
     include Thor::Actions
     
-    method_options :env => :string, :force => :boolean,
-                   :skip_schema => :boolean, :skip_data => :boolean,
-                   :tables => :string
+    METHOD_OPTIONS = { :env => :string, :force => :boolean,
+              :skip_schema => :boolean, :skip_data => :boolean,
+              :tables => :string }
     
+    method_options METHOD_OPTIONS
     desc "dump DUMP_DIR [APP_DIR='.'] [OPTIONS]", "Dumps the database contents and schema."
     def dump(dump_dir, app_dir = ".")
       setup! dump_dir, app_dir, :dump => true
@@ -15,9 +16,10 @@ module YDD
       YDD.dump @dump_dir
     end
     
+    method_options METHOD_OPTIONS
     desc "load DUMP_DIR [APP_DIR='.'] [OPTIONS]", "Loads the database contents and schema."
     def load(dump_dir, app_dir = ".")
-      setup! dump_dir, app_dir
+      setup! dump_dir, app_dir, :dump => false
       say "Starting load..."
       YDD.load @dump_dir
     end
