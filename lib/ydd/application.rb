@@ -5,8 +5,9 @@ module YDD
     include Thor::Actions
     
     METHOD_OPTIONS = { :env => :string, :force => :boolean,
-              :skip_schema => :boolean, :skip_data => :boolean,
-              :tables => :string }
+                       :skip_schema => :boolean, :skip_data => :boolean,
+                       :tables => :string
+                     }
     
     method_options METHOD_OPTIONS
     desc "dump DUMP_DIR [APP_DIR='.'] [OPTIONS]", "Dumps the database contents and schema."
