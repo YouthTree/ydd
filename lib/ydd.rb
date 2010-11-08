@@ -71,9 +71,15 @@ module YDD
     if !File.directory?(directory)
       raise Error, "Please provide a valid directory - #{directory} doesn't exist."
     end
-    check_files! directory, "schema.rb", "data.yml"
-    SchemaManager.load File.join(directory, "schema.rb") unless skip_schema?
-    DataManager.load   File.join(directory, "data.yml")  unless skip_data?
+    unless skip_schema?
+      check_files! directory, "schema.rb"
+      SchemaManager.load File.join(directory, "schema.rb") 
+    end
+    
+    unless skip_data?
+      check_files! directory, "data.yml"
+      DataManager.load   File.join(directory, "data.yml")
+    end
   end
   
   def self.check_files!(dir, *files)
