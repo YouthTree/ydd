@@ -18,6 +18,10 @@ module YDD
     !!skip_schema
   end
   
+  def self.schema_tables
+    [ 'schema_info', 'schema_migrations' ]
+  end
+  
   def self.skip_data?
     !!skip_data
   end

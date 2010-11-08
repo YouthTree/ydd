@@ -131,7 +131,8 @@ module YDD
       def self.tables
         base_tables = YDD.connection.tables
         base_tables &= YDD.tables if YDD.tables.present?
-        base_tables
+        base_tables.reject! { |table| YDD.schema_tables.include?(table) } if YDD.skip_schema?
+        base_tables 
       end
 
       def self.dump_table(io, table)
