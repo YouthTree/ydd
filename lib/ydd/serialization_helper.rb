@@ -59,6 +59,7 @@ module YDD
         columns = column_names.map{ |cn| YDD.connection.columns(table).detect{ |c| c.name == cn } }
         quoted_column_names = column_names.map { |column| YDD.connection.quote_column_name(column) }.join(',')
         quoted_table_name = SerializationHelper::Utils.quote_table(table)
+        records.sort_by! { |r| r['id'].to_i } if column_names.include? 'id'
         records.each do |record|
           quoted_values = record.zip(columns).map{|c| YDD.connection.quote(c.first, c.last)}.join(',')
           YDD.connection.execute("INSERT INTO #{quoted_table_name} (#{quoted_column_names}) VALUES (#{quoted_values})")

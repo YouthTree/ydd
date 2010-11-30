@@ -22,7 +22,7 @@ Note that this creates a `schema.rb` and a `data.yml` in the data dump directory
 
 ## Credits
 
-This gem is maintained by Darcy Laycock.
+This gem is maintained by Darcy Laycock and Dirk Kelly.
 
 Created by Orion Henry and Adam Wiggins.  Major updates by Ricardo Chimal, Jr.
 
