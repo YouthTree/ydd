@@ -1,6 +1,6 @@
 require 'yaml'
 require 'active_support'
-require 'active_support/core_ext/module/attribute_accessors'
+require 'active_support/all'
 require 'active_record'
 require 'fileutils'
 
