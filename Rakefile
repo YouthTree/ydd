@@ -14,8 +14,8 @@ and the like.
     gem.homepage = "http://github.com/YouthTree/ydd"
     gem.authors = ["Adam Wiggins","Orion Henry", "Darcy Laycock"]
     gem.add_dependency 'thor', '~> 0.14'
-    gem.add_dependency 'activesupport', '~> 3.0.0'
-    gem.add_dependency 'activerecord', '~> 3.0.0'
+    gem.add_dependency 'activesupport'
+    gem.add_dependency 'activerecord'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
