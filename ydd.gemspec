@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ydd}
-  s.version = "0.0.11"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Adam Wiggins", "Orion Henry", "Darcy Laycock"]
-  s.date = %q{2010-12-07}
+  s.date = %q{2011-01-16}
   s.default_executable = %q{ydd}
   s.description = %q{
 YDD is a tool (a fork of yaml_db really) to make it generally easy
@@ -49,16 +49,16 @@ and the like.
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<thor>, ["~> 0.14"])
       s.add_runtime_dependency(%q<activesupport>, [">= 0"])
-      s.add_runtime_dependency(%q<activerecord>, [">= 0"])
+      s.add_runtime_dependency(%q<activerecord>, [">= 2.3"])
     else
       s.add_dependency(%q<thor>, ["~> 0.14"])
       s.add_dependency(%q<activesupport>, [">= 0"])
-      s.add_dependency(%q<activerecord>, [">= 0"])
+      s.add_dependency(%q<activerecord>, [">= 2.3"])
     end
   else
     s.add_dependency(%q<thor>, ["~> 0.14"])
     s.add_dependency(%q<activesupport>, [">= 0"])
-    s.add_dependency(%q<activerecord>, [">= 0"])
+    s.add_dependency(%q<activerecord>, [">= 2.3"])
   end
 end
 
