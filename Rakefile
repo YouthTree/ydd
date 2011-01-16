@@ -15,7 +15,8 @@ and the like.
     gem.authors = ["Adam Wiggins","Orion Henry", "Darcy Laycock"]
     gem.add_dependency 'thor', '~> 0.14'
     gem.add_dependency 'activesupport'
-    gem.add_dependency 'activerecord'
+    # We want it to work with Rails 3 etc, older versions of AR will fail though.
+    gem.add_dependency 'activerecord', '>= 2.3'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
