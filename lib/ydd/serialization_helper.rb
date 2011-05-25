@@ -33,12 +33,14 @@ module YDD
     end
   
     class Load
-      def self.converter
-        return @converter if @converter.present?
+      def self.convert_from(char_enc)
+        @converter ||= {}
+        
+        return @converter[char_enc] if @converter[char_enc].present?
         
         if YDD.connection.encoding.eql? "UTF8"
-          puts "Creating a string converter that will ignore non-UTF8 characters."
-          @converter ||= Iconv.new('UTF-8//IGNORE', 'UTF-8')
+          puts "Creating a string converter from #{char_enc} that will ignore non-UTF8 characters."
+          @converter[char_enc] = Iconv.new('UTF-8//TRANSLIT//IGNORE', char_enc)
         end
       end
       
@@ -69,10 +71,10 @@ module YDD
         quoted_column_names = column_names.map { |column| YDD.connection.quote_column_name(column) }.join(',')
         quoted_table_name = SerializationHelper::Utils.quote_table(table)
         #records.sort_by! { |r| r['id'].to_i } if column_names.include? 'id'
-                
+        # 
         records.each do |record|
           quoted_values = record.zip(columns).map { |value_column| clean_column_value(value_column) }.join(",")
-                    
+          
           YDD.connection.execute("INSERT INTO #{quoted_table_name} (#{quoted_column_names}) VALUES (#{quoted_values})")
         end
         
@@ -86,11 +88,12 @@ module YDD
       
       def self.clean_column_value(value_column)
         value, column = value_column[0], value_column[1]
-        
+
         if value.present?
           case column.type
-          when :string
-            value = converter.iconv(value + ' ')[0..-2]
+          when :string, :text
+            character_encoding = CharDet.detect(value)["encoding"]
+            value = convert_from(character_encoding).iconv(value + ' ')[0..-2]
           else
             value
           end
