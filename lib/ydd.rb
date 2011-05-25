@@ -3,6 +3,7 @@ require 'active_support'
 require 'active_support/all'
 require 'active_record'
 require 'fileutils'
+require 'rchardet'
 
 module YDD
   class Error < StandardError; end
