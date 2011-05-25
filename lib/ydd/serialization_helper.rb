@@ -90,10 +90,10 @@ module YDD
         value, column = value_column[0], value_column[1]
 
         if value.present?
-          case column.type
+          value = case column.type
           when :string, :text
             character_encoding = CharDet.detect(value)["encoding"]
-            value = convert_from(character_encoding).iconv(value + ' ')[0..-2]
+            convert_from(character_encoding).iconv(value + ' ')[0..-2]
           else
             value
           end
