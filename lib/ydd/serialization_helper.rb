@@ -31,19 +31,28 @@ module YDD
         ActiveRecord::Base.logger = @@old_logger
       end
     end
-  
+
+    class IdentityConvertor
+      def self.iconv(string)
+        string.to_s
+      end
+    end
+
+
     class Load
       def self.convert_from(char_enc)
         @converter ||= {}
-        
+
         return @converter[char_enc] if @converter[char_enc].present?
-        
+
         if YDD.connection.encoding.eql? "UTF8"
           puts "Creating a string converter from #{char_enc} that will ignore non-UTF8 characters."
           @converter[char_enc] = Iconv.new('UTF-8//TRANSLIT//IGNORE', char_enc)
         end
+
+        @converter.fetch(char_enc, IdentityConvertor)
       end
-      
+
       def self.load(io, truncate = true)
         YDD.connection.transaction do
           load_documents(io, truncate)
@@ -71,21 +80,21 @@ module YDD
         quoted_column_names = column_names.map { |column| YDD.connection.quote_column_name(column) }.join(',')
         quoted_table_name = SerializationHelper::Utils.quote_table(table)
         #records.sort_by! { |r| r['id'].to_i } if column_names.include? 'id'
-        # 
+        #
         records.each do |record|
           quoted_values = record.zip(columns).map { |value_column| clean_column_value(value_column) }.join(",")
-          
+
           YDD.connection.execute("INSERT INTO #{quoted_table_name} (#{quoted_column_names}) VALUES (#{quoted_values})")
         end
-        
+
       end
 
       def self.reset_pk_sequence!(table_name)
         if YDD.connection.respond_to?(:reset_pk_sequence!)
           YDD.connection.reset_pk_sequence!(table_name)
         end
-      end   
-      
+      end
+
       def self.clean_column_value(value_column)
         value, column = value_column[0], value_column[1]
 
@@ -98,9 +107,9 @@ module YDD
             value
           end
         end
-        
+
         YDD.connection.quote(value, column)
-      end 
+      end
 
     end
 
@@ -163,7 +172,7 @@ module YDD
         base_tables = YDD.connection.tables
         base_tables &= YDD.tables if YDD.tables.present?
         base_tables.reject! { |table| YDD.schema_tables.include?(table) } if YDD.skip_schema?
-        base_tables 
+        base_tables
       end
 
       def self.dump_table(io, table)
@@ -183,7 +192,7 @@ module YDD
         pages             = (total_count.to_f / records_per_page).ceil - 1
         id                = table_column_names(table).first
         boolean_columns   = SerializationHelper::Utils.boolean_columns(table)
-        quoted_table_name = SerializationHelper::Utils.quote_table(table)        
+        quoted_table_name = SerializationHelper::Utils.quote_table(table)
         base_query        = "SELECT * FROM #{quoted_table_name} ORDER BY #{id}"
         0.upto(pages) do |page|
           sql = YDD.connection.add_limit_offset! base_query.dup,
