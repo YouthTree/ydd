@@ -101,6 +101,10 @@ module YDD
         if value.present?
           value = case column.type
           when :string, :text
+            unless value.is_a?(String)
+              value = value.to_s
+              puts "WARNING: Conversion to string required to value '#{value}'. Data loss may occur."
+            end
             character_encoding = CharDet.detect(value)["encoding"]
             convert_from(character_encoding).iconv(value + ' ')[0..-2]
           else
@@ -110,7 +114,7 @@ module YDD
 
         YDD.connection.quote(value, column)
       end
-
+      
     end
 
     module Utils
